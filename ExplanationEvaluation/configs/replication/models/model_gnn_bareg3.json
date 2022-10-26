@@ -1,0 +1,13 @@
+{
+    "model": {
+        "dataset": "bareg3",
+        "paper": "GNN",
+        "lr" : 0.001,
+        "epochs" : 10000,
+        "clip_max" : 2.0,
+        "batch_size": 64,
+        "early_stopping": 10000,
+        "seed" : 42,
+        "eval_enabled" : true
+    }
+}

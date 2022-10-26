@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "PG",
+        "Model": "GNN",
+        "Dataset": "bareg1"
+    },
+    "Results": {
+        "AUC": 0.7842444444444444,
+        "AUC std": 0.0,
+        "Inference time (ms)": 0.25606870651245117
+    },
+    "Trained model stats": {
+        "Training Accuracy": 122.43681533754462,
+        "Validation Accuracy": 85.25138607744158,
+        "Test Accuracy": 936.2974287052165
+    }
+}

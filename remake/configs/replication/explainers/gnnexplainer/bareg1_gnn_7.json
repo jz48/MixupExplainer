@@ -1,0 +1,18 @@
+{
+    "explainer": {
+        "config_name": "bareg1_gnn_7",
+        "dataset": "bareg1",
+        "model": "GNN",
+        "explainer": "GNN",
+        "lr" : 0.005,
+        "epochs" : 1,
+        "sample_bias" : 0.0,
+        "reg_size" : 0.03,
+        "reg_ent" : 0.01,
+        "temps" : [5.0, 1.0],
+        "seeds" : [0],
+        "eval_enabled" : true,
+        "thres_snip" : 5,
+        "thres_min" : -1
+    }
+}
