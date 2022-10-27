@@ -1,6 +1,6 @@
 {
     "model": {
-        "dataset": "bareg-alt-4",
+        "dataset": "bareg1-alt-4",
         "paper": "GNN",
         "lr" : 0.001,
         "epochs" : 3000,

@@ -31,6 +31,16 @@ def load_graph_dataset(_dataset, paper='GNN', shuffle=True):
         path = dir_path + '/dataset/' + "BA-Reg1-alt-2" + '.pkl'
         with open(path, 'rb') as fin:
             adjs, features, labels, _ = pkl.load(fin)
+    elif _dataset == "bareg1-alt-3":
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        path = dir_path + '/dataset/' + "BA-Reg1-alt-3" + '.pkl'
+        with open(path, 'rb') as fin:
+            adjs, features, labels, _ = pkl.load(fin)
+    elif _dataset == "bareg1-alt-4":
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        path = dir_path + '/dataset/' + "BA-Reg1-alt-4" + '.pkl'
+        with open(path, 'rb') as fin:
+            adjs, features, labels, _ = pkl.load(fin)
     elif _dataset == "bareg2":
         dir_path = os.path.dirname(os.path.realpath(__file__))
         path = dir_path + '/dataset/' + "BA-Reg2" + '.pkl'

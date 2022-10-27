@@ -256,8 +256,7 @@ X
                 assert 0
             loss.backward()
             optimizer.step()
-        assert 0
-
+        # assert 0
 
         # Retrieve final explanation
         mask = torch.sigmoid(self.edge_mask)

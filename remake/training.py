@@ -169,14 +169,19 @@ def train_graph(_dataset, _paper, args):
     graphs, features, labels, train_mask, val_mask, test_mask = load_dataset(_dataset, _paper)
     graphs_alt_1, features_alt_1, labels_alt_1, _, _, _ = load_dataset(_dataset + '-alt-1', _paper)
     graphs_alt_2, features_alt_2, labels_alt_2, _, _, _ = load_dataset(_dataset + '-alt-2', _paper)
+    graphs_alt_3, features_alt_3, labels_alt_3, _, _, _ = load_dataset(_dataset + '-alt-3', _paper)
+    graphs_alt_4, features_alt_4, labels_alt_4, _, _, _ = load_dataset(_dataset + '-alt-4', _paper)
     train_set = create_data_list(graphs, features, labels, train_mask)
     val_set = create_data_list(graphs, features, labels, val_mask)
     test_set = create_data_list(graphs, features, labels, test_mask)
 
     val_set_alt_1 = create_data_list(graphs_alt_1, features_alt_1, labels_alt_1, val_mask)
     val_set_alt_2 = create_data_list(graphs_alt_2, features_alt_2, labels_alt_2, val_mask)
+    val_set_alt_3 = create_data_list(graphs_alt_3, features_alt_3, labels_alt_3, val_mask)
+    val_set_alt_4 = create_data_list(graphs_alt_4, features_alt_4, labels_alt_4, val_mask)
 
-    print('len dataset: ', len(train_set), len(val_set), len(test_set), len(val_set_alt_1), len(val_set_alt_2))
+    print('len dataset: ', len(train_set), len(val_set), len(test_set), len(val_set_alt_1), len(val_set_alt_2),
+          len(val_set_alt_3), len(val_set_alt_4))
     model = model_selector(_paper, _dataset, False)
 
     print(type(model))
@@ -189,6 +194,8 @@ def train_graph(_dataset, _paper, args):
         val_loader = DataLoader(val_set, batch_size=len(val_set), shuffle=False)
         val_alt_1_loader = DataLoader(val_set_alt_1, batch_size=len(val_set), shuffle=False)
         val_alt_2_loader = DataLoader(val_set_alt_2, batch_size=len(val_set), shuffle=False)
+        val_alt_3_loader = DataLoader(val_set_alt_3, batch_size=len(val_set), shuffle=False)
+        val_alt_4_loader = DataLoader(val_set_alt_4, batch_size=len(val_set), shuffle=False)
         test_loader = DataLoader(test_set, batch_size=len(test_set), shuffle=False)
 
     # Define graph
@@ -270,6 +277,26 @@ def train_graph(_dataset, _paper, args):
             print('val mape_2: ', val_mape_2, len(val_set_alt_2))
             val_rmse_2 = math.sqrt(val_sum_2 / len(val_set_alt_2))
             val_mape_2 = float(val_mape_2) / int(len(val_set_alt_2))
+
+            val_loss_3, val_sum_3, val_mape_3 = 0.0, 0.0, 0.0
+            for data in val_alt_3_loader:
+                out = model(data.x, data.edge_index, data.batch)
+                val_loss_3 += model.loss(out, data.y)
+                val_sum_3 += model.loss(out, data.y)
+                val_mape_3 += model.mape(out, data.y)
+            print('val mape_3: ', val_mape_3, len(val_set_alt_3))
+            val_rmse_3 = math.sqrt(val_sum_3 / len(val_set_alt_3))
+            val_mape_3 = float(val_mape_3) / int(len(val_set_alt_3))
+
+            val_loss_4, val_sum_4, val_mape_4 = 0.0, 0.0, 0.0
+            for data in val_alt_4_loader:
+                out = model(data.x, data.edge_index, data.batch)
+                val_loss_4 += model.loss(out, data.y)
+                val_sum_4 += model.loss(out, data.y)
+                val_mape_4 += model.mape(out, data.y)
+            print('val mape_4: ', val_mape_4, len(val_set_alt_4))
+            val_rmse_4 = math.sqrt(val_sum_4 / len(val_set_alt_4))
+            val_mape_4 = float(val_mape_4) / int(len(val_set_alt_4))
         # print(f"Epoch: {epoch}, train_rmse: {train_rmse:.4f}, val_rmse: {val_rmse:.4f}, train_loss: {train_loss:.4f}")
 
         if val_rmse < best_val_rmse or val_mape < best_val_mape:  # New best results
@@ -277,6 +304,8 @@ def train_graph(_dataset, _paper, args):
             print(f"Epoch: {epoch}, train_rmse: {train_rmse:.6f}, train_mape: {train_mape: .6f}, val_rmse: {val_rmse:.6f}, val_mape: {val_mape: .6f},  train_loss: {train_loss:.4f}")
             print(
                 f"val_rmse_alt1: {val_rmse_1:.6f}, val_mape_alt1: {val_mape_1: .6f}, val_rmse_alt2: {val_rmse_2:.6f}, val_mape_alt2: {val_mape_2: .6f}, ")
+            print(
+                f"val_rmse_alt3: {val_rmse_3:.6f}, val_mape_alt3: {val_mape_3: .6f}, val_rmse_alt4: {val_rmse_4:.6f}, val_mape_alt4: {val_mape_4: .6f}, ")
 
             best_val_rmse = val_rmse
             best_val_mape = val_mape
