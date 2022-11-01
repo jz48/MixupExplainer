@@ -170,7 +170,7 @@ class GNNExplainer(BaseExplainer):
         mask = self.edge_mask
 
         return loss
-X
+
     def _loss(self, masked_pred, original_pred, mask, reg_coefs):
         """
         Returns the loss score based on the given mask.
