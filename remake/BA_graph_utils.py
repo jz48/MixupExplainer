@@ -11,8 +11,12 @@ def build_ba_reg(samples=1000, nodes=20, edges=1):
     data_alt_1 = []  # change features for nodes outside house
     data_alt_2 = []  # remove edges for nodes outside house
     data_alt_3 = []  # larger noisy graph with ground truth to replace part of it
-    data_alt_4 = []  # larger noisy graph with ground truth to replace part of it and remove eedges and nodes outside
+    data_alt_4 = []  # larger noisy graph with ground truth to replace part of it and remove edges and nodes outside
                         # house
+    data_alt_5 = []  # change noisy feature to 10x
+    data_alt_6 = []  # change noisy feature to 100x
+    data_alt_7 = []  # change ground truth feature and label to 10x
+    data_alt_8 = []  # change ground truth feature and label to 0.1x
     for i in range(samples):
         graph = nx.barabasi_albert_graph(n=nodes, m=edges, seed=i)
         graph_alt_2 = nx.Graph()
@@ -80,7 +84,37 @@ def build_ba_reg(samples=1000, nodes=20, edges=1):
         # print(data_alt_3[0][0].edges)
         # print(data_alt_4[0][0].edges)
         # assert 0
-    return data, data_alt_1, data_alt_2, data_alt_3, data_alt_4
+
+        # modify features and labels
+        features_alt_5 = []
+        features_alt_6 = []
+        features_alt_7 = []
+        features_alt_8 = []
+        for idx in range(20):
+            features_alt_5.append([bit * 10 for bit in features[idx]])
+            features_alt_6.append([bit * 100 for bit in features[idx]])
+            features_alt_7.append(features[idx])
+            features_alt_8.append(features[idx])
+        for idx in range(20, 25):
+            features_alt_5.append(features[idx])
+            features_alt_6.append(features[idx])
+            features_alt_7.append([bit * 10 for bit in features[idx]])
+            features_alt_8.append([bit * 0.1 for bit in features[idx]])
+        label_alt_7 = [labe * 10 for labe in label]
+        label_alt_8 = [labe * 0.1 for labe in label]
+        data_alt_5.append([graph, features_alt_5, label, ground_truth])
+        data_alt_6.append([graph, features_alt_6, label, ground_truth])
+        data_alt_7.append([graph, features_alt_7, label_alt_7, ground_truth])
+        data_alt_8.append([graph, features_alt_8, label_alt_8, ground_truth])
+
+        for line in range(25):
+            pass
+            # print(features[line][0], features_alt_5[line][0], features_alt_6[line][0], features_alt_7[line][0], features_alt_8[line][0])
+        # print(label)
+        # print(label_alt_7)
+        # print(label_alt_8)
+        # assert 0
+    return data, data_alt_1, data_alt_2, data_alt_3, data_alt_4, data_alt_5, data_alt_6, data_alt_7, data_alt_8
 
 
 def build_ba_reg2(samples=1000, nodes=120, edges=1):
@@ -150,12 +184,16 @@ def save_ba_reg(data, path, nodes=120):
 
 
 if __name__ == '__main__':
-    data, data_alt_1, data_alt_2, data_alt_3, data_alt_4 = build_ba_reg()
+    data, data_alt_1, data_alt_2, data_alt_3, data_alt_4, data_alt_5, data_alt_6, data_alt_7, data_alt_8 = build_ba_reg()
     save_ba_reg(data, './dataset/BA-Reg1.pkl', nodes=25)
     save_ba_reg(data_alt_1, './dataset/BA-Reg1-alt-1.pkl', nodes=25)
     save_ba_reg(data_alt_2, './dataset/BA-Reg1-alt-2.pkl', nodes=25)
     save_ba_reg(data_alt_3, './dataset/BA-Reg1-alt-3.pkl', nodes=50)
     save_ba_reg(data_alt_4, './dataset/BA-Reg1-alt-4.pkl', nodes=50)
+    save_ba_reg(data_alt_5, './dataset/BA-Reg1-alt-5.pkl', nodes=25)
+    save_ba_reg(data_alt_6, './dataset/BA-Reg1-alt-6.pkl', nodes=25)
+    save_ba_reg(data_alt_7, './dataset/BA-Reg1-alt-7.pkl', nodes=25)
+    save_ba_reg(data_alt_8, './dataset/BA-Reg1-alt-8.pkl', nodes=25)
     # data = build_ba_reg2()
     # save_ba_reg(data, './dataset/BA-Reg2.pkl', nodes=120)
     pass

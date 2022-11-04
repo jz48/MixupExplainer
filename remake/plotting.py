@@ -170,3 +170,12 @@ def plot(graph, edge_weigths, features, labels, idx, thres_min, thres_snip, data
         # Save figure
         plt.savefig(f'{save_path}{idx}.png')
         plt.clf()
+
+def plot_simple_graph(graph, features, labels):
+    """
+    Function that can plot an explanation (sub)graph and store the image.
+
+    :param graph: graph provided by explainer
+
+    :param labels: Label of each node required for coloring of nodes
+    """
