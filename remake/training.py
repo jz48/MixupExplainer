@@ -1,3 +1,4 @@
+import json
 import math
 import os
 import torch
@@ -90,7 +91,8 @@ def load_best_model(best_epoch, paper, dataset, model, eval_enabled):
         checkpoint = torch.load(f"./checkpoints/{paper}/{dataset}/model_{best_epoch}")
     model.load_state_dict(checkpoint['model_state_dict'])
 
-    if eval_enabled: model.eval()
+    if eval_enabled:
+        model.eval()
 
     return model
 
@@ -218,6 +220,45 @@ def train_graph(_dataset, _paper, args):
     best_val_mape = 99999
     best_epoch = 0
 
+    only_do_eval = True
+    if only_do_eval:
+        model = load_best_model(2849, _paper, _dataset, model, True)
+
+        def val_embedding(val_alt_loader, val_set_alt):
+            ebds = []
+            for data in val_alt_loader:
+                _, ebd = model(data.x, data.edge_index, data.batch)
+                ebds.append(ebd)
+            return ebds
+
+        val_ebd = val_embedding(val_loader, val_set)
+        val_ebd_1 = val_embedding(val_alt_1_loader, val_set_alt_1)
+        val_ebd_2 = val_embedding(val_alt_2_loader, val_set_alt_2)
+        val_ebd_3 = val_embedding(val_alt_3_loader, val_set_alt_3)
+        val_ebd_4 = val_embedding(val_alt_4_loader, val_set_alt_4)
+        val_ebd_5 = val_embedding(val_alt_5_loader, val_set_alt_5)
+        val_ebd_6 = val_embedding(val_alt_6_loader, val_set_alt_6)
+        val_ebd_7 = val_embedding(val_alt_7_loader, val_set_alt_7)
+        val_ebd_8 = val_embedding(val_alt_8_loader, val_set_alt_8)
+        print(len(val_ebd))
+        print(val_ebd[0].shape)
+        # print(val_ebd[0].detach().tolist())
+
+        val_ebd = val_ebd[0].detach().tolist()
+        val_ebd_1 = val_ebd_1[0].detach().tolist()
+        val_ebd_2 = val_ebd_2[0].detach().tolist()
+        val_ebd_3 = val_ebd_3[0].detach().tolist()
+        val_ebd_4 = val_ebd_4[0].detach().tolist()
+        val_ebd_5 = val_ebd_5[0].detach().tolist()
+        val_ebd_6 = val_ebd_6[0].detach().tolist()
+        val_ebd_7 = val_ebd_7[0].detach().tolist()
+        val_ebd_8 = val_ebd_8[0].detach().tolist()
+
+        res = [val_ebd, val_ebd_1, val_ebd_2, val_ebd_3, val_ebd_4, val_ebd_5, val_ebd_6, val_ebd_7, val_ebd_8]
+        with open('./results/val_embedding.json', 'w') as f:
+            f.write(json.dumps(res))
+        return
+
     for epoch in range(0, args.epochs):
         model.train()
 
@@ -266,9 +307,13 @@ def train_graph(_dataset, _paper, args):
                 # print('val mape: ', val_mape, len(val_set_alt))
                 val_rmse = math.sqrt(val_sum / len(val_set_alt))
                 val_mape = float(val_mape) / int(len(val_set_alt))
-                return val_rmse, val_mape, var_loss
+                return val_rmse, val_mape, val_loss
 
-            val_rmse, val_mape, var_loss = do_val_alt(val_loader, val_set)
+            val_rmse, val_mape, val_loss = do_val_alt(val_loader, val_set)
+
+        # print(f"Epoch: {epoch}, train_rmse: {train_rmse:.4f}, val_rmse: {val_rmse:.4f}, train_loss: {train_loss:.4f}")
+
+        if val_mape < best_val_mape:  # New best results
             val_rmse_1, val_mape_1, _ = do_val_alt(val_alt_1_loader, val_set_alt_1)
             val_rmse_2, val_mape_2, _ = do_val_alt(val_alt_2_loader, val_set_alt_2)
             val_rmse_3, val_mape_3, _ = do_val_alt(val_alt_3_loader, val_set_alt_3)
@@ -277,9 +322,6 @@ def train_graph(_dataset, _paper, args):
             val_rmse_6, val_mape_6, _ = do_val_alt(val_alt_6_loader, val_set_alt_6)
             val_rmse_7, val_mape_7, _ = do_val_alt(val_alt_7_loader, val_set_alt_7)
             val_rmse_8, val_mape_8, _ = do_val_alt(val_alt_8_loader, val_set_alt_8)
-        # print(f"Epoch: {epoch}, train_rmse: {train_rmse:.4f}, val_rmse: {val_rmse:.4f}, train_loss: {train_loss:.4f}")
-
-        if val_mape < best_val_mape:  # New best results
             print("Val improved")
             print(f"Epoch: {epoch}, train_rmse: {train_rmse:.6f}, train_mape: {train_mape: .6f}, val_rmse: {val_rmse:.6f}, val_mape: {val_mape: .6f},  train_loss: {train_loss:.4f}")
             print(
