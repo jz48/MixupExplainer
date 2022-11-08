@@ -86,7 +86,7 @@ class GraphGCN(torch.nn.Module):
 
         out = self.lin(input_lin)
         out = self.lin2(out)
-        return out
+        return out, input_lin
 
     def embedding(self, x, edge_index, edge_weights=None):
         if edge_weights is None:
