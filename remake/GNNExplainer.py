@@ -131,7 +131,7 @@ class GNNExplainer(BaseExplainer):
         n_edge_mask = torch.cat((mask, padding))
         # print(n_edge_mask)
         # assert 0
-        masked_pred = self.model_to_explain(b_feat, edge_index, edge_weights=n_edge_mask)
+        masked_pred, _ = self.model_to_explain(b_feat, edge_index, edge_weights=n_edge_mask)
         # masked_pred_2 = self.model_to_explain(feats, graph, edge_weights=mask)
         loss = self._loss(masked_pred, pred_label, mask, self.reg_coefs)
         # print(self.edge_mask[:10])
@@ -221,7 +221,7 @@ class GNNExplainer(BaseExplainer):
             feats = self.features
             graph = ptgeom.utils.k_hop_subgraph(index, 3, self.graphs)[1]
             with torch.no_grad():
-                original_pred = self.model_to_explain(feats, graph)[index]
+                original_pred, _ = self.model_to_explain(feats, graph)[index]
                 pred_label = original_pred.argmax(dim=-1).detach()
         else:
             feats = self.features[index].detach()
@@ -231,7 +231,7 @@ class GNNExplainer(BaseExplainer):
             # graph = graph[:, (graph[0] != graph[1])]
             # print(feats.shape, graph.shape)
             with torch.no_grad():
-                original_pred = self.model_to_explain(feats, graph)
+                original_pred, _ = self.model_to_explain(feats, graph)
                 pred_label = original_pred.detach()  # .argmax(dim=-1).detach()
 
         self._set_masks(feats, graph)
