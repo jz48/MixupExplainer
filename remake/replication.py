@@ -11,6 +11,7 @@ from ground_truth_loaders import load_dataset_ground_truth
 from AUCEvaluation import AUCEvaluation
 from EfficiencyEvaluation import EfficiencyEvluation
 from GNNExplainer import GNNExplainer, ExdGNNExplainer
+from MixUpExplainer import MixUpExplainer
 from PGExplainer import PGExplainer
 from model_selector import model_selector
 from plotting import plot
@@ -59,6 +60,8 @@ def select_explainer(explainer, model, graphs, features, task, epochs, lr, reg_c
                            sample_bias=sample_bias)
     elif explainer == "GNN":
         return GNNExplainer(model, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
+    elif explainer == "MixUp":
+        return MixUpExplainer(model, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
     else:
         raise NotImplementedError("Unknown explainer type")
 
