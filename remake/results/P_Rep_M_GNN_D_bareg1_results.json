@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "Rep",
+        "Model": "GNN",
+        "Dataset": "bareg1"
+    },
+    "Results": {
+        "AUC": 0.5355326388888888,
+        "AUC std": 0.0,
+        "Inference time (ms)": 11003.5525115331
+    },
+    "Trained model stats": {
+        "Training Accuracy": 119.16582983389156,
+        "Validation Accuracy": 83.59966100596641,
+        "Test Accuracy": 914.9324770167468
+    }
+}

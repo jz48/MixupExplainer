@@ -1,11 +1,11 @@
 {
     "explainer": {
-        "config_name": "bareg1_gnn_6",
+        "config_name": "bareg1_gnn_5",
         "dataset": "bareg1",
         "model": "GNN",
-        "explainer": "MixUp",
-        "lr" : 0.001,
-        "epochs" : 10000,
+        "explainer": "Rep",
+        "lr" : 1e-5,
+        "epochs" : 50000,
         "sample_bias" : 0.0,
         "reg_size" : 0.05,
         "reg_ent" : 0.05,

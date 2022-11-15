@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import sys
 
 # # Replication experiment
 # 
@@ -22,13 +23,19 @@ from replication import replication
 _dataset = 'bareg1'  # One of: bashapes, bacommunity, treecycles, treegrids, ba2motifs, mutag
 _model = 'gnn'
 # _explainer = 'pgexplainer'  # One of: pgexplainer, gnnexplainer
-explainer_type = 3
+
+print(sys.argv[1])
+explainer_type = int(sys.argv[1])
+
 if explainer_type == 1:
     _explainer = 'gnnexplainer'
 elif explainer_type == 2:
     _explainer = 'pgexplainer'
 elif explainer_type == 3:
     _explainer = 'mixupexplainer'
+elif explainer_type == 4:
+    _explainer = 'repexplainer'
+print(explainer_type, _explainer)
 # Parameters below should only be changed if you want to run any of the experiments in the supplementary
 _folder = 'replication'  # One of: replication, extension
 
@@ -39,7 +46,9 @@ if explainer_type == 1:
 elif explainer_type == 2:
     config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_5.json"
 elif explainer_type == 3:
-    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_5.json"
+    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_6.json"
+elif explainer_type == 4:
+    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_6.json"
 # config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_5.json"
 print(config_path)
 config = Selector(config_path)

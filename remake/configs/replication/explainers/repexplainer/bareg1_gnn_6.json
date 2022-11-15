@@ -3,7 +3,7 @@
         "config_name": "bareg1_gnn_6",
         "dataset": "bareg1",
         "model": "GNN",
-        "explainer": "MixUp",
+        "explainer": "Rep",
         "lr" : 0.001,
         "epochs" : 10000,
         "sample_bias" : 0.0,
