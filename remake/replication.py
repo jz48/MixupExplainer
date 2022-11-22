@@ -170,9 +170,11 @@ def replication(config, extension=False, run_qual=True, results_store=True):
 
     # Get ground_truth for every node
     explanation_labels, indices = load_dataset_ground_truth(config.dataset)
-    if extension: indices = np.argwhere(test_mask).squeeze()
-
+    if extension:
+        indices = np.argwhere(test_mask).squeeze()
+    indices = [i for i in indices][:1]
     # Get explainer
+    print(indices)
     print(config.lr, config.epochs, config.reg_size, config.reg_ent, config.temps)
     explainer = select_explainer(config.explainer,
                                  model=model,
@@ -202,7 +204,7 @@ def replication(config, extension=False, run_qual=True, results_store=True):
         np.random.seed(s)
 
         inference_eval.reset()
-
+        # assert 0
         auc_score, time_score = run_experiment(inference_eval, auc_evaluation, explainer, indices)
         # assert 0
         if idx == 0 and run_qual:  # We only run the qualitative experiment once

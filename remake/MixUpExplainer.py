@@ -50,6 +50,7 @@ class MixUpExplainer(BaseExplainer):
         self.temp = [5.0, 2.0]
         self.training = False
         self.noisy_graph = []
+        self.dropoutlayer = nn.Dropout(0.1)
 
     def _set_masks(self, x1, edge_index1, x2, edge_index2):
         """
@@ -153,9 +154,24 @@ class MixUpExplainer(BaseExplainer):
             mask1 = torch.sigmoid(self.edge_mask1_)
             mask2 = torch.sigmoid(self.edge_mask2_)
 
-        mask = torch.add(torch.mul(mask1, self.delta), torch.mul(mask2, self.delta))
-        masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask)
-        masked_pred2, _ = self.model_to_explain(feats2, self.merge_edge_index, edge_weights=mask)
+        # print(mask1)
+        # print(mask2)
+        # t1 = torch.add(mask1, torch.tensor(self.mask2))
+
+        # print(t1)
+        # t2 = torch.mul(mask2, torch.tensor(-1))
+        t2 = self.mask2 - mask2
+        t2 = self.dropoutlayer(t2)
+        # print(t2)
+        mask_pred1 = torch.add(mask1, t2)
+        # print(mask_pred1)
+
+        t3 = self.dropoutlayer(self.mask1 - mask1)
+        mask_pred2 = torch.add(mask2, t3)
+
+        # assert 0
+        masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask_pred1)
+        masked_pred2, _ = self.model_to_explain(feats2, self.merge_edge_index, edge_weights=mask_pred2)
         # masked_pred_2 = self.model_to_explain(feats, graph, edge_weights=mask)
         loss1 = self._loss(masked_pred1, pred_label1, mask1, self.reg_coefs)
         loss2 = self._loss(masked_pred2, pred_label2, mask2, self.reg_coefs)
@@ -246,7 +262,7 @@ class MixUpExplainer(BaseExplainer):
                                 feats2, graph2, pred_label2,
                                 self.reg_coefs, temperature, self.bias)
             # print(e, loss)
-            if e + 1 % 1000 == 0:
+            if (e % 1000) == 0:
                 print(e, loss)
                 # assert 0
             loss.backward(retain_graph=True)

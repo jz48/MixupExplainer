@@ -5,9 +5,9 @@
         "Dataset": "bareg1"
     },
     "Results": {
-        "AUC": 0.4865458333333333,
+        "AUC": 0.47250000000000003,
         "AUC std": 0.0,
-        "Inference time (ms)": 21734.170830249786
+        "Inference time (ms)": 7537.240695953369
     },
     "Trained model stats": {
         "Training Accuracy": 119.16582983389156,

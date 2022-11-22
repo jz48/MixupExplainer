@@ -46,9 +46,9 @@ if explainer_type == 1:
 elif explainer_type == 2:
     config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_5.json"
 elif explainer_type == 3:
-    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_6.json"
+    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
 elif explainer_type == 4:
-    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_6.json"
+    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
 # config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_5.json"
 print(config_path)
 config = Selector(config_path)
@@ -60,7 +60,7 @@ extension = (_folder == 'extension')
 
 # In[8]:
 
-
+# assert 0
 (auc, auc_std), inf_time = replication(config.args.explainer, extension)
 
 # In[ ]:
