@@ -62,14 +62,17 @@ def model_selector(paper, dataset, pretrained=True, return_checkpoint=False):
         print('load model from path: ', path)
         checkpoint = torch.load(path)
         renamed_state_dict = {}
-        for key in checkpoint['model_state_dict']:
-            if key.startswith('conv') and key.endswith('weight'):
-                new_key = key[:5] + '.lin' + key[-7:]
-                renamed_state_dict[new_key] = (checkpoint['model_state_dict'][key])
-                # renamed_state_dict[new_key] = (checkpoint['model_state_dict'][key]).T
-            else:
-                renamed_state_dict[key] = checkpoint['model_state_dict'][key]
-        model.load_state_dict(renamed_state_dict)
+        try:
+            model.load_state_dict(checkpoint['model_state_dict'])
+        except:
+            for key in checkpoint['model_state_dict']:
+                if key.startswith('conv') and key.endswith('weight'):
+                    new_key = key[:5] + '.lin' + key[-7:]
+                    renamed_state_dict[new_key] = (checkpoint['model_state_dict'][key])
+                    # renamed_state_dict[new_key] = (checkpoint['model_state_dict'][key]).T
+                else:
+                    renamed_state_dict[key] = checkpoint['model_state_dict'][key]
+            model.load_state_dict(renamed_state_dict)
         # model.load_state_dict(checkpoint['model_state_dict'])
         print(
             f"This model obtained: Train Acc: {checkpoint['train_acc']:.4f}, Val Acc: {checkpoint['val_acc']:.4f}, Test Acc: {checkpoint['test_acc']:.4f}.")
