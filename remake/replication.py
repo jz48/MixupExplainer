@@ -168,6 +168,9 @@ def replication(config, extension=False, run_qual=True, results_store=True):
     if config.eval_enabled:
         model.eval()
 
+    print(torch.cuda.is_available())
+    print(torch.cuda.device_count())
+    print(torch.cuda.current_device())
     # Get ground_truth for every node
     explanation_labels, indices = load_dataset_ground_truth(config.dataset)
     if extension:
