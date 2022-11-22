@@ -69,7 +69,7 @@ def model_selector(paper, dataset, pretrained=True, return_checkpoint=False):
         except:
             for key in checkpoint['model_state_dict']:
                 if key.startswith('conv') and key.endswith('weight'):
-                    new_key = key[:5] + '.' + key[-7:]
+                    new_key = key[:5] + key[-7:]
                     renamed_state_dict[new_key] = (checkpoint['model_state_dict'][key])
                     # renamed_state_dict[new_key] = (checkpoint['model_state_dict'][key]).T
                 else:
