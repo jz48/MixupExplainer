@@ -77,7 +77,7 @@ class GraphGCN(torch.nn.Module):
 
     def forward(self, x, edge_index, edge_weights=None, batch=None):
         if batch is None:  # No batch given
-            batch = torch.zeros(x.size(0), dtype=torch.long)
+            batch = torch.zeros(x.size(0), dtype=torch.long).to(self.device)
         # edge_weights.to(self.device)
         # print(x.shape, edge_index.shape)
         embed = self.embedding(x, edge_index, edge_weights)
