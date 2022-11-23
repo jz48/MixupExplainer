@@ -42,7 +42,7 @@ def to_torch_graph(graphs, task):
         return torch.tensor(graphs)
 
 
-def select_explainer(explainer, model, graphs, features, task, epochs, lr, reg_coefs, temp=None, sample_bias=None):
+def select_explainer(explainer, model, device, graphs, features, task, epochs, lr, reg_coefs, temp=None, sample_bias=None):
     """
     Select the explainer we which to use.
     :param explainer: str, "PG" or "GNN"
@@ -57,14 +57,14 @@ def select_explainer(explainer, model, graphs, features, task, epochs, lr, reg_c
     :params sample_bias: the bias we add when sampling random graphs. 
     """
     if explainer == "PG":
-        return PGExplainer(model, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs, temp=temp,
+        return PGExplainer(model, device, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs, temp=temp,
                            sample_bias=sample_bias)
     elif explainer == "GNN":
-        return GNNExplainer(model, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
+        return GNNExplainer(model, device, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
     elif explainer == "MixUp":
-        return MixUpExplainer(model, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
+        return MixUpExplainer(model, device, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
     elif explainer == "Rep":
-        return RepExplainer(model, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
+        return RepExplainer(model, device, graphs, features, task, epochs=epochs, lr=lr, reg_coefs=reg_coefs)
     else:
         raise NotImplementedError("Unknown explainer type")
 
