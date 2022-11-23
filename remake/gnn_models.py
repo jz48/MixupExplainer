@@ -73,11 +73,12 @@ class GraphGCN(torch.nn.Module):
         self.relu3 = ReLU()
         self.lin = Linear(self.embedding_size * 2, num_classes)
         self.lin2 = Linear(num_classes, 1)
+        self.device = None
 
     def forward(self, x, edge_index, batch=None, edge_weights=None):
         if batch is None:  # No batch given
             batch = torch.zeros(x.size(0), dtype=torch.long)
-
+        # edge_weights.to(self.device)
         # print(x.shape, edge_index.shape)
         embed = self.embedding(x, edge_index, edge_weights)
 
@@ -92,6 +93,7 @@ class GraphGCN(torch.nn.Module):
     def embedding(self, x, edge_index, edge_weights=None):
         if edge_weights is None:
             edge_weights = torch.ones(edge_index.size(1))
+        edge_weights.to(self.device)
         stack = []
 
         # print(x.shape, edge_index.shape)
