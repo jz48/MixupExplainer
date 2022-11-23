@@ -91,9 +91,6 @@ class GraphGCN(torch.nn.Module):
         return out, input_lin
 
     def embedding(self, x, edge_index, edge_weights=None):
-        if edge_weights is None:
-            edge_weights = torch.ones(edge_index.size(1))
-        edge_weights.to(self.device)
         stack = []
 
         # print(x.shape, edge_index.shape)

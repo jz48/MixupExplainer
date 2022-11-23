@@ -235,14 +235,15 @@ class MixUpExplainer(BaseExplainer):
         graph1 = self.graphs[index1].detach().to(self.device)
         feats2 = self.features[index2].detach().to(self.device)
         graph2 = self.graphs[index2].detach().to(self.device)
+        one_edge_mask = torch.ones(graph1.size(1)).to(self.device)
         # print(feats.shape, graph.shape)
         # Remove self-loops
         # graph = graph[:, (graph[0] != graph[1])]
         # print(feats.shape, graph.shape)
         with torch.no_grad():
-            original_pred1, _ = self.model_to_explain(feats1, graph1)
+            original_pred1, _ = self.model_to_explain(feats1, graph1, one_edge_mask)
             pred_label1 = original_pred1.detach()  # .argmax(dim=-1).detach()
-            original_pred2, _ = self.model_to_explain(feats2, graph2)
+            original_pred2, _ = self.model_to_explain(feats2, graph2, one_edge_mask)
             pred_label2 = original_pred2.detach()
 
         self._set_masks(feats1, graph1, feats2, graph2)
