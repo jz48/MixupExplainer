@@ -11,6 +11,7 @@ python experiment_models_training.py bareg1 gnn
 ```
 
 after this step, please manually change the name of the latest checkpoint to be "best_model"
+
 The two command line args mean: 1. the dataset trained on. 2. The graph model we use.
 
 2. run the explainer
