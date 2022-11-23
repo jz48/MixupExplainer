@@ -232,7 +232,7 @@ def train_graph(_dataset, _paper, args):
     best_val_mape = 99999
     best_epoch = 0
 
-    only_do_eval = True
+    only_do_eval = False
     if only_do_eval:
         model = load_best_model(2849, _paper, _dataset, model, True).to(device)
 
