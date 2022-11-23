@@ -46,7 +46,7 @@ def get_pretrained_path(paper, dataset):
     return path
 
 
-def model_selector(paper, dataset, pretrained=True, return_checkpoint=False):
+def model_selector(paper, dataset, device, pretrained=True, return_checkpoint=False):
     """
     Given a paper and dataset loads accociated model.
     :param paper: the paper who's classification model we want to use.
@@ -56,6 +56,7 @@ def model_selector(paper, dataset, pretrained=True, return_checkpoint=False):
     :returns: torch.nn.module models and optionallly a dict containing it's parameters.
     """
     model = string_to_model(paper, dataset)
+    model.device = device
     if pretrained:
         path = get_pretrained_path(paper, dataset)
         print(type(model))

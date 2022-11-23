@@ -23,6 +23,7 @@ class NodeGCN(torch.nn.Module):
         self.conv3 = GCNConv(20, 20)
         self.relu3 = ReLU()
         self.lin = Linear(3 * 20, num_classes)
+        self.device = None
 
     def forward(self, x, edge_index, edge_weights=None):
         input_lin = self.embedding(x, edge_index, edge_weights)
@@ -31,7 +32,7 @@ class NodeGCN(torch.nn.Module):
 
     def embedding(self, x, edge_index, edge_weights=None):
         if edge_weights is None:
-            edge_weights = torch.ones(edge_index.size(1))
+            edge_weights = torch.ones(edge_index.size(1)).to(self.device)
         stack = []
 
         out1 = self.conv1(x, edge_index, edge_weights)

@@ -173,6 +173,7 @@ def replication(config, extension=False, run_qual=True, results_store=True):
     # Load pretrained models
     model, checkpoint = model_selector(config.model,
                                        config.dataset,
+                                       device=device,
                                        pretrained=True,
                                        return_checkpoint=True)
     if config.eval_enabled:
