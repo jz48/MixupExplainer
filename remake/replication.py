@@ -188,6 +188,7 @@ def replication(config, extension=False, run_qual=True, results_store=True):
     print(config.lr, config.epochs, config.reg_size, config.reg_ent, config.temps)
     explainer = select_explainer(config.explainer,
                                  model=model,
+                                 device=device,
                                  graphs=graphs,
                                  features=features,
                                  task=task,
@@ -196,12 +197,13 @@ def replication(config, extension=False, run_qual=True, results_store=True):
                                  reg_coefs=[config.reg_size,
                                             config.reg_ent],
                                  temp=config.temps,
-                                 sample_bias=config.sample_bias)
+                                 sample_bias=config.sample_bias,
+                                 )
 
     model.to(device)
     features.to(device)
     labels.to(device)
-    graphs.to(device)
+    # graphs.to(device)
     explainer.to(device)
 
     # Get evaluation methods

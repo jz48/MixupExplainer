@@ -41,7 +41,7 @@ class MixUpExplainer(BaseExplainer):
     :function explain: trains the explainer to return the subgraph which explains the classification of the model-to-be-explained.
     """
 
-    def __init__(self, model_to_explain, graphs, features, task, epochs=30, lr=0.003, reg_coefs=(0.05, 1.0)):
+    def __init__(self, model_to_explain, device, graphs, features, task, epochs=30, lr=0.003, reg_coefs=(0.05, 1.0)):
         super().__init__(model_to_explain, graphs, features, task)
         self.epochs = epochs
         self.lr = lr
@@ -50,6 +50,7 @@ class MixUpExplainer(BaseExplainer):
         self.temp = [5.0, 2.0]
         self.training = False
         self.noisy_graph = []
+        self.device = device
         self.dropoutlayer = nn.Dropout(0.1)
 
     def _set_masks(self, x1, edge_index1, x2, edge_index2):
@@ -230,10 +231,10 @@ class MixUpExplainer(BaseExplainer):
         self.model_to_explain.eval()
         self._clear_masks()
 
-        feats1 = self.features[index1].detach()
-        graph1 = self.graphs[index1].detach()
-        feats2 = self.features[index2].detach()
-        graph2 = self.graphs[index2].detach()
+        feats1 = self.features[index1].detach().to(self.device)
+        graph1 = self.graphs[index1].detach().to(self.device)
+        feats2 = self.features[index2].detach().to(self.device)
+        graph2 = self.graphs[index2].detach().to(self.device)
         # print(feats.shape, graph.shape)
         # Remove self-loops
         # graph = graph[:, (graph[0] != graph[1])]
