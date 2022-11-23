@@ -310,7 +310,8 @@ def train_graph(_dataset, _paper, args):
             train_loss = float(loss) / int(len(train_set))
 
             eval_data = next(iter(test_loader))  # Loads all test samples
-            out, _ = model(eval_data.x, eval_data.edge_index, eval_data.batch)
+            eval_data.to(device)
+            out, _ = model(eval_data.x, eval_data.edge_index, eval_data.edge_mask, eval_data.batch)
             test_rmse = math.sqrt(model.loss(out, eval_data.y))
 
             def do_val_alt(val_alt_loader, val_set_alt):
