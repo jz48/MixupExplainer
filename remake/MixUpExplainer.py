@@ -120,7 +120,7 @@ class MixUpExplainer(BaseExplainer):
         # print(self.edge_mask2)
         self.mask1 = torch.tensor(mask1)
         self.mask2 = torch.tensor(mask2)
-        self.merge_edge_index = torch.tensor(merge_edge_index)
+        self.merge_edge_index = torch.tensor(merge_edge_index).to(self.device)
         self.delta = 0.5  # or a trainable parameter
         # assert 0
 
@@ -164,11 +164,11 @@ class MixUpExplainer(BaseExplainer):
         t2 = self.mask2 - mask2
         t2 = self.dropoutlayer(t2)
         # print(t2)
-        mask_pred1 = torch.add(mask1, t2)
+        mask_pred1 = torch.add(mask1, t2).to(self.device)
         # print(mask_pred1)
 
         t3 = self.dropoutlayer(self.mask1 - mask1)
-        mask_pred2 = torch.add(mask2, t3)
+        mask_pred2 = torch.add(mask2, t3).to(self.device)
 
         # assert 0
         masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask_pred1, batch=batch)
