@@ -160,6 +160,16 @@ def replication(config, extension=False, run_qual=True, results_store=True):
     labels = torch.tensor(labels)
     graphs = to_torch_graph(graphs, task)
 
+    if_gpu = 0
+    if torch.cuda.is_available():
+        print('cuda is available!')
+        print(torch.cuda.device_count())
+        print(torch.cuda.current_device())
+        if_gpu = 1
+        n_gpu = torch.cuda.device_count()
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     # Load pretrained models
     model, checkpoint = model_selector(config.model,
                                        config.dataset,
@@ -168,9 +178,6 @@ def replication(config, extension=False, run_qual=True, results_store=True):
     if config.eval_enabled:
         model.eval()
 
-    print(torch.cuda.is_available())
-    print(torch.cuda.device_count())
-    print(torch.cuda.current_device())
     # Get ground_truth for every node
     explanation_labels, indices = load_dataset_ground_truth(config.dataset)
     if extension:
@@ -190,6 +197,12 @@ def replication(config, extension=False, run_qual=True, results_store=True):
                                             config.reg_ent],
                                  temp=config.temps,
                                  sample_bias=config.sample_bias)
+
+    model.to(device)
+    features.to(device)
+    labels.to(device)
+    graphs.to(device)
+    explainer.to(device)
 
     # Get evaluation methods
     auc_evaluation = AUCEvaluation(task, explanation_labels, indices)

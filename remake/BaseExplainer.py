@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
+import torch
 
-
-class BaseExplainer(ABC):
+class BaseExplainer(torch.nn.Module):
     def __init__(self, model_to_explain, graphs, features, task):
+        super().__init__()
         self.model_to_explain = model_to_explain
         self.graphs = graphs
         self.features = features
