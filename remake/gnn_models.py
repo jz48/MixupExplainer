@@ -75,7 +75,7 @@ class GraphGCN(torch.nn.Module):
         self.lin2 = Linear(num_classes, 1)
         self.device = None
 
-    def forward(self, x, edge_index, batch=None, edge_weights=None):
+    def forward(self, x, edge_index, edge_weights=None, batch=None):
         if batch is None:  # No batch given
             batch = torch.zeros(x.size(0), dtype=torch.long)
         # edge_weights.to(self.device)
