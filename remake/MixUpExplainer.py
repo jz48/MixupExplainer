@@ -289,5 +289,5 @@ class MixUpExplainer(BaseExplainer):
             expl_graph_weights[t] = final_mask[i]
         # print(mask[:20])
         # assert 0
-        return graph1, expl_graph_weights
+        return graph1.cup(), expl_graph_weights
 
