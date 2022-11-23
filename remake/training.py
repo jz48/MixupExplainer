@@ -273,6 +273,7 @@ def train_graph(_dataset, _paper, args):
         return
 
     for epoch in range(0, args.epochs):
+        model.to(device)
         model.train()
 
         # Use pytorch-geometric batching method
