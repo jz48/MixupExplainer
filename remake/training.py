@@ -24,7 +24,8 @@ def create_data_list(graphs, features, labels, mask):
         x = torch.tensor(features[i])
         edge_index = torch.tensor(graphs[i])
         y = torch.tensor(labels[i])
-        data = Data(x=x, edge_index=edge_index, y=y)
+        edge_mask = torch.ones(x.size(1))
+        data = Data(x=x, edge_index=edge_index, edge_mask=edge_mask, y=y)
         data_list.append(data)
         # print(data)
     return data_list
@@ -167,6 +168,17 @@ def train_graph(_dataset, _paper, args):
     :param _paper: the paper we whish to follow, chose from "GNN" or "REG"
     :param args: a dict containing the relevant model arguements
     """
+
+    if_gpu = 0
+    if torch.cuda.is_available():
+        print('cuda is available!')
+        print(torch.cuda.device_count())
+        print(torch.cuda.current_device())
+        if_gpu = 1
+        n_gpu = torch.cuda.device_count()
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     print(_paper)
     graphs, features, labels, train_mask, val_mask, test_mask = load_dataset(_dataset, _paper)
     graphs_alt_1, features_alt_1, labels_alt_1, _, _, _ = load_dataset(_dataset + '-alt-1', _paper)
@@ -222,12 +234,13 @@ def train_graph(_dataset, _paper, args):
 
     only_do_eval = True
     if only_do_eval:
-        model = load_best_model(2849, _paper, _dataset, model, True)
+        model = load_best_model(2849, _paper, _dataset, model, True).to(device)
 
         def val_embedding(val_alt_loader, val_set_alt):
             ebds = []
             for data in val_alt_loader:
-                _, ebd = model(data.x, data.edge_index, data.batch)
+                data.to(device)
+                _, ebd = model(data.x, data.edge_index, data.edge_mask, data.batch)
                 ebds.append(ebd)
             return ebds
 
@@ -264,8 +277,9 @@ def train_graph(_dataset, _paper, args):
 
         # Use pytorch-geometric batching method
         for data in train_loader:
+            data.to(device)
             optimizer.zero_grad()
-            out, _ = model(data.x, data.edge_index, data.batch)
+            out, _ = model(data.x, data.edge_index, data.edge_mask, data.batch)
             # print(out)
             # print(out.shape)
             # print(data.y)
@@ -281,7 +295,8 @@ def train_graph(_dataset, _paper, args):
             loss = 0
             train_mape = 0
             for data in train_loader:
-                out, _ = model(data.x, data.edge_index, data.batch)
+                data.to(device)
+                out, _ = model(data.x, data.edge_index, data.edge_mask, data.batch)
                 # print(out, data.y)
                 loss += model.mape(out, data.y)
                 # print(criterion(out, data.y))
@@ -300,7 +315,8 @@ def train_graph(_dataset, _paper, args):
             def do_val_alt(val_alt_loader, val_set_alt):
                 val_loss, val_sum, val_mape = 0.0, 0.0, 0.0
                 for data in val_alt_loader:
-                    out, _ = model(data.x, data.edge_index, data.batch)
+                    data.to(device)
+                    out, _ = model(data.x, data.edge_index, data.edge_mask, data.batch)
                     val_loss += model.loss(out, data.y)
                     val_sum += model.loss(out, data.y)
                     val_mape += model.mape(out, data.y)
