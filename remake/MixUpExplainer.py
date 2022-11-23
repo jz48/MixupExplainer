@@ -112,14 +112,14 @@ class MixUpExplainer(BaseExplainer):
         std = torch.nn.init.calculate_gain('relu') * sqrt(2.0 / (2 * N))
         self.edge_mask1 = torch.nn.Parameter(torch.randn(E) * std).to(self.device)
         # print(self.edge_mask1)
-        self.edge_mask1_ = torch.mul(self.edge_mask1, torch.tensor(mask1).to(self.device))
+        self.edge_mask1_ = torch.mul(self.edge_mask1, torch.tensor(mask1))
         # print(self.edge_mask1)
         self.edge_mask2 = torch.nn.Parameter(torch.randn(E) * std).to(self.device)
         # print(self.edge_mask2)
-        self.edge_mask2_ = torch.mul(self.edge_mask2, torch.tensor(mask2).to(self.device))
+        self.edge_mask2_ = torch.mul(self.edge_mask2, torch.tensor(mask2))
         # print(self.edge_mask2)
-        self.mask1 = torch.tensor(mask1).to(self.device)
-        self.mask2 = torch.tensor(mask2).to(self.device)
+        self.mask1 = torch.tensor(mask1)
+        self.mask2 = torch.tensor(mask2)
         self.merge_edge_index = torch.tensor(merge_edge_index).to(self.device)
         self.delta = 0.5  # or a trainable parameter
         # assert 0
