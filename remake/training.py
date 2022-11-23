@@ -24,7 +24,7 @@ def create_data_list(graphs, features, labels, mask):
         x = torch.tensor(features[i])
         edge_index = torch.tensor(graphs[i])
         y = torch.tensor(labels[i])
-        edge_mask = torch.ones(x.size(1))
+        edge_mask = torch.ones(edge_index.size(1))
         data = Data(x=x, edge_index=edge_index, edge_mask=edge_mask, y=y)
         data_list.append(data)
         # print(data)
