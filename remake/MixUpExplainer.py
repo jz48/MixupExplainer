@@ -171,8 +171,8 @@ class MixUpExplainer(BaseExplainer):
         mask_pred2 = torch.add(mask2, t3)
 
         # assert 0
-        masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask_pred1, batch)
-        masked_pred2, _ = self.model_to_explain(feats2, self.merge_edge_index, edge_weights=mask_pred2, batch)
+        masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask_pred1, batch=batch)
+        masked_pred2, _ = self.model_to_explain(feats2, self.merge_edge_index, edge_weights=mask_pred2, batch=batch)
         # masked_pred_2 = self.model_to_explain(feats, graph, edge_weights=mask)
         loss1 = self._loss(masked_pred1, pred_label1, mask1, self.reg_coefs)
         loss2 = self._loss(masked_pred2, pred_label2, mask2, self.reg_coefs)
