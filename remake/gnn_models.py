@@ -97,6 +97,7 @@ class GraphGCN(torch.nn.Module):
         stack = []
 
         # print(x.shape, edge_index.shape)
+        print(x.get_device(), edge_index.get_device(), edge_weights.get_device())
         out1 = self.conv1(x, edge_index, edge_weights)
         out1 = torch.nn.functional.normalize(out1, p=2, dim=1)
         out1 = self.relu1(out1)
