@@ -110,17 +110,17 @@ class MixUpExplainer(BaseExplainer):
         (N, F), E = x1.size(), len(edge_dict)
         # print(N, F, E)
         std = torch.nn.init.calculate_gain('relu') * sqrt(2.0 / (2 * N))
-        self.edge_mask1 = torch.nn.Parameter(torch.randn(E) * std)
+        self.edge_mask1 = torch.nn.Parameter(torch.randn(E) * std).to(self.device)
         # print(self.edge_mask1)
-        self.edge_mask1_ = torch.mul(self.edge_mask1, torch.tensor(mask1))
+        self.edge_mask1_ = torch.mul(self.edge_mask1, torch.tensor(mask1).to(self.device))
         # print(self.edge_mask1)
-        self.edge_mask2 = torch.nn.Parameter(torch.randn(E) * std)
+        self.edge_mask2 = torch.nn.Parameter(torch.randn(E) * std).to(self.device)
         # print(self.edge_mask2)
-        self.edge_mask2_ = torch.mul(self.edge_mask2, torch.tensor(mask2))
+        self.edge_mask2_ = torch.mul(self.edge_mask2, torch.tensor(mask2).to(self.device))
         # print(self.edge_mask2)
-        self.mask1 = torch.tensor(mask1)
-        self.mask2 = torch.tensor(mask2)
-        self.merge_edge_index = torch.tensor(merge_edge_index)
+        self.mask1 = torch.tensor(mask1).to(self.device)
+        self.mask2 = torch.tensor(mask2).to(self.device)
+        self.merge_edge_index = torch.tensor(merge_edge_index).to(self.device)
         self.delta = 0.5  # or a trainable parameter
         # assert 0
 
@@ -133,7 +133,7 @@ class MixUpExplainer(BaseExplainer):
 
     def forward(self, feats1, graph1, pred_label1,
                 feats2, graph2, pred_label2,
-                reg_coefs=1, temperature=1.0, bias=0.0):
+                batch, reg_coefs=1, temperature=1.0, bias=0.0):
 
         if self.training:
             def sampling_mask(bias, edge_mask):
@@ -171,8 +171,8 @@ class MixUpExplainer(BaseExplainer):
         mask_pred2 = torch.add(mask2, t3)
 
         # assert 0
-        masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask_pred1)
-        masked_pred2, _ = self.model_to_explain(feats2, self.merge_edge_index, edge_weights=mask_pred2)
+        masked_pred1, _ = self.model_to_explain(feats1, self.merge_edge_index, edge_weights=mask_pred1, batch)
+        masked_pred2, _ = self.model_to_explain(feats2, self.merge_edge_index, edge_weights=mask_pred2, batch)
         # masked_pred_2 = self.model_to_explain(feats, graph, edge_weights=mask)
         loss1 = self._loss(masked_pred1, pred_label1, mask1, self.reg_coefs)
         loss2 = self._loss(masked_pred2, pred_label2, mask2, self.reg_coefs)
@@ -263,7 +263,7 @@ class MixUpExplainer(BaseExplainer):
             # Sample possible explanation
             loss = self.forward(feats1, graph1, pred_label1,
                                 feats2, graph2, pred_label2,
-                                self.reg_coefs, temperature, self.bias)
+                                batch, self.reg_coefs, temperature, self.bias)
             # print(e, loss)
             if (e % 1000) == 0:
                 print(e, loss)
