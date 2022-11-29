@@ -15,29 +15,14 @@ def train_explainer(config):
     config_path = f"/data/jiaxing/xai/XAI_GNN_regression/remake/configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
     print('config_path: ', config_path)
     print(os.path.exists(config_path))
-    print(Selector(config_path))
-    o_config = {
-        "config_name": "bareg1_gnn_7",
-        "dataset": "bareg1",
-        "model": "GNN",
-        "explainer": "MixUp",
-        "lr": config['lr'],
-        "epochs": config['epochs'],
-        "sample_bias": 0.0,
-        "reg_size": 0.2,
-        "reg_ent": 0.01,
-        "temps": [5.0, 1.0],
-        "seeds": [0],
-        "eval_enabled": True,
-        "thres_snip": 5,
-        "thres_min": -1
-    }
-
-    print(o_config['lr'], o_config['epochs'])
+    o_config = Selector(config_path).args.explainer
+    print(o_config)
+    print(o_config.lr, o_config.epochs)
     # (auc, auc_std), inf_time = replication(config.args.explainer, False)
-
+    o_config.lr = config['lr']
+    o_config.epochs = config['epochs']
     for i in range(10):
-        (auc, auc_std), inf_time = replication(config, False)
+        (auc, auc_std), inf_time = replication(o_config, False)
         acc = auc
         tune.report(mean_accuracy=acc)
 
