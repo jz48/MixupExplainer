@@ -276,8 +276,8 @@ class MixUpExplainer(BaseExplainer):
             optimizer.step()
             optimizer.zero_grad()
             scheduler.step()
-            for param_group in optimizer.param_groups:
-                print(param_group['lr'])
+            # for param_group in optimizer.param_groups:
+            #     print(param_group['lr'])
         # assert 0
 
         # Retrieve final explanation
