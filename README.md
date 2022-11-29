@@ -10,9 +10,12 @@ cd XAI_GNN_regression/remake
 python experiment_models_training.py bareg1 gnn
 ```
 
+after this step, please manually change the name of the latest checkpoint to be "best_model"
+
 The two command line args mean: 1. the dataset trained on. 2. The graph model we use.
 
 2. run the explainer
 ```
-python exd_explainer.py
+python exd_explainer.py 3
 ```
+3 means using the MixUpExplainer, support to other explainers will be added later.
