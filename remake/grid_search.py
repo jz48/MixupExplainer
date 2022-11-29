@@ -11,6 +11,7 @@ def train_explainer(config):
     _explainer = 'mixupexplainer'
     _folder = 'replication'
     config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
+    print('config_path: ', config_path)
     o_config = Selector(config_path).args.explainer
 
     o_config.lr = config['lr']
