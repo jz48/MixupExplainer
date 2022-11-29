@@ -12,7 +12,7 @@ def train_explainer(config):
     _model = 'gnn'
     _explainer = 'mixupexplainer'
     _folder = 'replication'
-    config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
+    config_path = f"/data/jiaxing/xai/XAI_GNN_regression/remake/configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
     print('config_path: ', config_path)
     print(os.path.exists(config_path))
     print(Selector(config_path))
