@@ -1,3 +1,5 @@
+import os.path
+
 import torch.optim as optim
 from ray import tune
 from ray.tune.examples.mnist_pytorch import get_data_loaders, ConvNet, train, test
@@ -12,6 +14,8 @@ def train_explainer(config):
     _folder = 'replication'
     config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
     print('config_path: ', config_path)
+    print(os.path.exists(config_path))
+    print(Selector(config_path))
     o_config = {
         "config_name": "bareg1_gnn_7",
         "dataset": "bareg1",
