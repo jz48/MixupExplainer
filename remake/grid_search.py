@@ -12,12 +12,24 @@ def train_explainer(config):
     _folder = 'replication'
     config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
     print('config_path: ', config_path)
-    o_config = Selector(config_path).args.explainer
+    o_config = {
+        "config_name": "bareg1_gnn_7",
+        "dataset": "bareg1",
+        "model": "GNN",
+        "explainer": "MixUp",
+        "lr": config['lr'],
+        "epochs": config['epochs'],
+        "sample_bias": 0.0,
+        "reg_size": 0.2,
+        "reg_ent": 0.01,
+        "temps": [5.0, 1.0],
+        "seeds": [0],
+        "eval_enabled": True,
+        "thres_snip": 5,
+        "thres_min": -1
+    }
 
-    o_config.lr = config['lr']
-    o_config.epochs = config['epochs']
-
-    print(o_config.lr, o_config.epochs)
+    print(o_config['lr'], o_config['epochs'])
     # (auc, auc_std), inf_time = replication(config.args.explainer, False)
 
     for i in range(10):
