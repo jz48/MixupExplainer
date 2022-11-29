@@ -11,6 +11,7 @@ import networkx as nx
 from BaseExplainer import BaseExplainer
 from graph import index_edge
 from data_utils import adj_to_edge_index
+from transformers import get_linear_schedule_with_warmup
 
 """
 This is an adaption of the GNNExplainer of the PyTorch-Lightning library. 
@@ -253,12 +254,15 @@ class MixUpExplainer(BaseExplainer):
         # print('original pred: ', original_pred)
         # assert 0
         optimizer = Adam([self.edge_mask1, self.edge_mask2], lr=self.lr)
+        t_total = self.epochs
+        scheduler = get_linear_schedule_with_warmup(optimizer,
+                                                    num_warmup_steps=int(t_total * 0.1),
+                                                    num_training_steps=t_total)
         # Start training loop
         self.training = True
         # print('start training...')
         temp_schedule = lambda e: self.temp[0] * ((self.temp[1] / self.temp[0]) ** (e / self.epochs))
         for e in range(0, self.epochs):
-            optimizer.zero_grad()
             temperature = temp_schedule(e)
             # Sample possible explanation
             loss = self.forward(feats1, graph1, pred_label1,
@@ -270,6 +274,10 @@ class MixUpExplainer(BaseExplainer):
                 # assert 0
             loss.backward(retain_graph=True)
             optimizer.step()
+            optimizer.zero_grad()
+            scheduler.step()
+            for param_group in optimizer.param_groups:
+                print(param_group['lr'])
         # assert 0
 
         # Retrieve final explanation
