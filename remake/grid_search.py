@@ -13,10 +13,10 @@ def train_explainer(config):
     config_path = f"./configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
     o_config = Selector(config_path)
 
-    o_config.lr = config['lr']
-    o_config.epochs = config['epochs']
+    o_config.args.explainer.lr = config['lr']
+    o_config.args.explainer.epochs = config['epochs']
 
-    print(o_config.lr, o_config.epochs)
+    print(o_config.args.explainer.lr, o_config.args.explainer.epochs)
     # (auc, auc_std), inf_time = replication(config.args.explainer, False)
 
     for i in range(10):
