@@ -19,3 +19,6 @@ The two command line args mean: 1. the dataset trained on. 2. The graph model we
 python exd_explainer.py 3
 ```
 3 means using the MixUpExplainer, support to other explainers will be added later.
+
+
+3. The folder <ExplanationEvaluation> is refer to [https://github.com/LarsHoldijk/RE-ParameterizedExplainerForGraphNeuralNetworks.git]
