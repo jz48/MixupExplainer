@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "GNN",
+        "Model": "GNN",
+        "Dataset": "syn1"
+    },
+    "Results": {
+        "AUC": 0.48788585876854534,
+        "AUC std": 0.009233354624328489,
+        "Inference time (ms)": 51.51446223258971
+    },
+    "Trained model stats": {
+        "Training Accuracy": 0.9696428571428571,
+        "Validation Accuracy": 1.0,
+        "Test Accuracy": 1.0
+    }
+}
