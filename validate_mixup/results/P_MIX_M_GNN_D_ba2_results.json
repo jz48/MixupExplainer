@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "MIX",
+        "Model": "GNN",
+        "Dataset": "ba2"
+    },
+    "Results": {
+        "AUC": 0.5332941483803553,
+        "AUC std": 0.04026766717778444,
+        "Inference time (ms)": 1266.2086482048035
+    },
+    "Trained model stats": {
+        "Training Accuracy": 1.0,
+        "Validation Accuracy": 1.0,
+        "Test Accuracy": 0.99
+    }
+}
