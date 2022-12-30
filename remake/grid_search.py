@@ -10,7 +10,7 @@ from replication import replication
 def train_explainer(config):
     _dataset = 'bareg1'
     _model = 'gnn'
-    _explainer = 'mixupexplainer'
+    _explainer = 'mixupgnnexplainer'
     _folder = 'replication'
     config_path = f"/data/jiaxing/xai/XAI_GNN_regression/remake/configs/{_folder}/explainers/{_explainer}/{_dataset}_{_model}_7.json"
     print('config_path: ', config_path)

@@ -32,7 +32,7 @@ if explainer_type == 1:
 elif explainer_type == 2:
     _explainer = 'pgexplainer'
 elif explainer_type == 3:
-    _explainer = 'mixupexplainer'
+    _explainer = 'mixupgnnexplainer'
 elif explainer_type == 4:
     _explainer = 'repexplainer'
 print(explainer_type, _explainer)

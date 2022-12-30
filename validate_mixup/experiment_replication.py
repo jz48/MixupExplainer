@@ -22,7 +22,7 @@ from ExplanationEvaluation.tasks.replication import replication
 
 _dataset = 'ba2motifs' # One of: bashapes, bacommunity, treecycles, treegrids, ba2motifs, mutag
 _explainer = 'pgexplainer' # One of: pgexplainer, gnnexplainer
-_explainer = 'mixupexplainer'
+_explainer = 'mixupgnnexplainer'
 _explainer = 'gnnexplainer'
 
 print(_dataset, _explainer)
