@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "GNN",
+        "Model": "GNN",
+        "Dataset": "ba2"
+    },
+    "Results": {
+        "AUC": 0.5368683133060224,
+        "AUC std": 0.004531331736353879,
+        "Inference time (ms)": 1157.8595208287238
+    },
+    "Trained model stats": {
+        "Training Accuracy": 1.0,
+        "Validation Accuracy": 1.0,
+        "Test Accuracy": 0.99
+    }
+}

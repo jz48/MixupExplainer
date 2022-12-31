@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "MIXSFTGNN",
+        "Model": "GNN",
+        "Dataset": "syn1"
+    },
+    "Results": {
+        "AUC": 0.8870327959211796,
+        "AUC std": 0.010230452164162502,
+        "Inference time (ms)": 360.50710125764215
+    },
+    "Trained model stats": {
+        "Training Accuracy": 0.9696428571428571,
+        "Validation Accuracy": 1.0,
+        "Test Accuracy": 1.0
+    }
+}

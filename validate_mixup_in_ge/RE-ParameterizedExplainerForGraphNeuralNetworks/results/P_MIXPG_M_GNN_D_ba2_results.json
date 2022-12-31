@@ -1,0 +1,17 @@
+{
+    "Explainer parameters": {
+        "Explainer": "MIXPG",
+        "Model": "GNN",
+        "Dataset": "ba2"
+    },
+    "Results": {
+        "AUC": 0.8217514778263357,
+        "AUC std": 0.04210386626108026,
+        "Inference time (ms)": 0.6991126298904419
+    },
+    "Trained model stats": {
+        "Training Accuracy": 1.0,
+        "Validation Accuracy": 1.0,
+        "Test Accuracy": 0.99
+    }
+}
