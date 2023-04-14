@@ -1,5 +1,5 @@
 $Y$
-
+$CE(Y, Y^*) = CE(Y, f(G^*))$
 Dear Reviewer y45i,
 Thank you for your valuable comments and feedback. Below are our itemized responses to the comments and questions.
 
